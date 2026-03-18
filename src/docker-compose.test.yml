@@ -1,0 +1,75 @@
+version: '3.8'
+
+# ---------------------------------------------------------------------------
+# Docker Compose configuration for running Order microservice integration tests
+#
+# Usage:
+#   docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
+#
+# The test runner container executes the Order.IntegrationTests project against
+# a live Order service backed by a real PostgreSQL database, validating the full
+# HTTP contract between the QuickApp monolith and the extracted Order service.
+#
+# For fast in-process tests (no Docker required), run:
+#   dotnet test src/Tests/Order.IntegrationTests/Order.IntegrationTests.csproj
+# ---------------------------------------------------------------------------
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL – dedicated test database, isolated from the dev database
+  # ---------------------------------------------------------------------------
+  postgres-test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres_test
+      POSTGRES_USER: postgres
+      POSTGRES_DB: orderdb_test
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d orderdb_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Order microservice – built from source, pointed at the test database
+  # ---------------------------------------------------------------------------
+  order-service-test:
+    build:
+      context: .
+      dockerfile: Services/Order/Order.API/Dockerfile
+    ports:
+      - "5103:5003"
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5003
+      - ConnectionStrings__DefaultConnection=Host=postgres-test;Port=5432;Database=orderdb_test;Username=postgres;Password=postgres_test
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5003/healthz || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  # ---------------------------------------------------------------------------
+  # Test runner – executes the integration test suite against the live service
+  # ---------------------------------------------------------------------------
+  order-integration-tests:
+    build:
+      context: .
+      dockerfile: Tests/Order.IntegrationTests/Dockerfile.test
+    depends_on:
+      order-service-test:
+        condition: service_healthy
+    environment:
+      # Base URL for the live Order service (used by Docker-mode tests)
+      - ORDER_SERVICE_BASE_URL=http://order-service-test:5003
+      - ASPNETCORE_ENVIRONMENT=Test
+    volumes:
+      - ./TestResults:/app/TestResults

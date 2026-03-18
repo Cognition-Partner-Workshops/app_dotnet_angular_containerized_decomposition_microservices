@@ -1,0 +1,48 @@
+# ---------------------------------------------------------------------------
+# Multi-stage Dockerfile for running Order.IntegrationTests inside Docker
+#
+# Build context must be the src/ directory:
+#   docker build -f Tests/Order.IntegrationTests/Dockerfile.test .
+# ---------------------------------------------------------------------------
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+# Copy solution and project files first for layer-cached restore
+COPY Microservices.sln ./
+COPY global.json ./
+
+COPY Shared/Shared.Contracts/Shared.Contracts.csproj             Shared/Shared.Contracts/
+COPY Shared/Shared.Infrastructure/Shared.Infrastructure.csproj   Shared/Shared.Infrastructure/
+
+COPY Services/Order/Order.Domain/Order.Domain.csproj             Services/Order/Order.Domain/
+COPY Services/Order/Order.Infrastructure/Order.Infrastructure.csproj Services/Order/Order.Infrastructure/
+COPY Services/Order/Order.API/Order.API.csproj                   Services/Order/Order.API/
+
+COPY Tests/Order.IntegrationTests/Order.IntegrationTests.csproj  Tests/Order.IntegrationTests/
+
+RUN dotnet restore Tests/Order.IntegrationTests/Order.IntegrationTests.csproj
+
+# Copy all source
+COPY . .
+
+# Build and publish the test project
+RUN dotnet build Tests/Order.IntegrationTests/Order.IntegrationTests.csproj \
+    --no-restore \
+    -c Release
+
+# ---------------------------------------------------------------------------
+# Runtime stage – runs the tests
+# ---------------------------------------------------------------------------
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS test-runner
+WORKDIR /app
+
+COPY --from=build /src .
+
+# Default: run tests and write TRX results to /app/TestResults
+ENTRYPOINT ["dotnet", "test", \
+    "Tests/Order.IntegrationTests/Order.IntegrationTests.csproj", \
+    "--no-build", \
+    "--configuration", "Release", \
+    "--logger", "trx;LogFileName=order-integration-tests.trx", \
+    "--results-directory", "/app/TestResults"]
