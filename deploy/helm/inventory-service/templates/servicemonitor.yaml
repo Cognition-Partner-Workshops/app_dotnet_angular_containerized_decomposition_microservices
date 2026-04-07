@@ -1,0 +1,16 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "inventory-service.fullname" . }}
+  labels:
+    app: {{ include "inventory-service.name" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "inventory-service.name" . }}
+  endpoints:
+    - port: http
+      path: {{ .Values.serviceMonitor.path }}
+      interval: {{ .Values.serviceMonitor.interval }}
+{{- end }}
