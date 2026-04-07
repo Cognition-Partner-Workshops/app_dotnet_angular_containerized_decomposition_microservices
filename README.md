@@ -110,3 +110,13 @@ dotnet run
 | [`app_dotnet_angular_containerized_decomposition_microfrontends`](https://github.com/Cognition-Partner-Workshops/app_dotnet_angular_containerized_decomposition_microfrontends) | Angular micro-frontends target |
 | [`app_dotnet_angular_containerized_decomposition_iac`](https://github.com/Cognition-Partner-Workshops/app_dotnet_angular_containerized_decomposition_iac) | App-specific Helm charts |
 | [`platform-engineering-shared-services`](https://github.com/Cognition-Partner-Workshops/platform-engineering-shared-services) | Shared EKS cluster and platform infra |
+
+## Pre-commit Hooks
+
+This repository uses [pre-commit](https://pre-commit.com/) with [gitleaks](https://github.com/gitleaks/gitleaks) for secret detection.
+
+### Setup
+1. Install pre-commit: `pip install pre-commit`
+2. Install the hooks: `pre-commit install`
+3. (Optional) Run against all files: `pre-commit run --all-files`
+
