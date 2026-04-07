@@ -1,0 +1,52 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/cognition-partner-workshops/inventory-service
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 5004
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+env:
+  ASPNETCORE_ENVIRONMENT: Production
+  ASPNETCORE_URLS: "http://+:5004"
+
+logging:
+  level: Information
+
+serviceMonitor:
+  enabled: true
+  interval: 30s
+  path: /metrics
+
+networkPolicy:
+  enabled: true
+
+postgresql:
+  host: postgresql
+  port: 5432
+  database: inventorydb
+  username: postgres
+
+rabbitmq:
+  host: rabbitmq
+  port: 5672

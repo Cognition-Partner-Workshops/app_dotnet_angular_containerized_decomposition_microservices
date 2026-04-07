@@ -1,0 +1,25 @@
+replicaCount: 2
+
+image:
+  tag: "latest"
+
+env:
+  ASPNETCORE_ENVIRONMENT: Staging
+  ASPNETCORE_URLS: "http://+:5004"
+
+logging:
+  level: Information
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
