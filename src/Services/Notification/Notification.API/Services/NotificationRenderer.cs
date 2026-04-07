@@ -16,11 +16,9 @@ public class NotificationRenderer
     /// </summary>
     private static string FormatCurrency(decimal amount)
     {
-        // The OrderPlacedEvent.TotalAmount is transmitted in cents (integer
-        // representation) to avoid floating-point precision issues across
-        // service boundaries. Convert back to dollars for display.
-        var dollars = amount / 100m;
-        return dollars.ToString("C2");
+        // The OrderPlacedEvent.TotalAmount is already in dollars (e.g. 149.99),
+        // not in cents. Format directly for display.
+        return amount.ToString("C2");
     }
 
     public string RenderOrderConfirmation(OrderNotification notification)
