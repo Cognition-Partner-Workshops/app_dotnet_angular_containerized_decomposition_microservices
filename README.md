@@ -41,6 +41,7 @@ The monolith's bounded contexts are decomposed into the following independently 
 | `product-service` | 5004 | Product catalog management | `ProductsController`, product models |
 | `notification-service` | 5005 | Email and in-app notifications | `NotificationService`, notification models |
 | `api-gateway` | 5000 | YARP reverse proxy, request routing, rate limiting | New — replaces monolith's single entry point |
+| `ai-monitoring-agent` | 5006 | Azure App Insights AI monitoring, anomaly detection, alerting | New — cross-cutting observability service |
 
 ## Project Structure
 
@@ -68,10 +69,12 @@ src/
 │   │   ├── Product.API/
 │   │   ├── Product.Domain/
 │   │   └── Product.Infrastructure/
-│   └── Notification/
-│       ├── Notification.API/
-│       ├── Notification.Domain/
-│       └── Notification.Infrastructure/
+│   ├── Notification/
+│   │   ├── Notification.API/
+│   │   ├── Notification.Domain/
+│   │   └── Notification.Infrastructure/
+│   └── Monitoring/
+│       └── AIMonitoringAgent/          # App Insights AI monitoring agent
 ├── Shared/
 │   ├── Shared.Contracts/          # Shared DTOs, events, interfaces
 │   └── Shared.Infrastructure/     # Common middleware, logging, health checks

@@ -81,6 +81,22 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=notificationdb;Username=postgres;Password=postgres
 
+  ai-monitoring-agent:
+    build:
+      context: .
+      dockerfile: Services/Monitoring/AIMonitoringAgent/Dockerfile
+    ports:
+      - "5006:5006"
+    depends_on:
+      - identity-service
+      - customer-service
+      - order-service
+      - product-service
+      - notification-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Monitoring__ApplicationInsightsConnectionString=
+
   postgres:
     image: postgres:16-alpine
     ports:
