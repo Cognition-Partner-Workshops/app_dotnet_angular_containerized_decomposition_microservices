@@ -1,0 +1,18 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "<your-app-insights-connection-string>",
+    "Monitoring__ApplicationInsightsConnectionString": "<your-app-insights-connection-string>",
+    "Monitoring__WorkspaceId": "<your-log-analytics-workspace-id>",
+    "Monitoring__AzureOpenAIEndpoint": "<your-azure-openai-endpoint>",
+    "Monitoring__AzureOpenAIDeployment": "gpt-4o",
+    "Monitoring__AlertWebhookUrl": "<your-teams-or-slack-webhook-url>",
+    "Monitoring__AnomalyDetectionIntervalMinutes": "5",
+    "Monitoring__HealthCheckIntervalMinutes": "2",
+    "Monitoring__FailureRateThresholdPercent": "5.0",
+    "Monitoring__ResponseTimeThresholdMs": "2000",
+    "Monitoring__MonitoredServices": "identity-service,customer-service,order-service,product-service,notification-service,api-gateway"
+  }
+}
