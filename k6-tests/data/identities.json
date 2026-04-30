@@ -1,7 +1,22 @@
 [
-  { "id": 1, "username": "admin",    "email": "admin@example.com",    "role": "Admin" },
-  { "id": 2, "username": "jdoe",     "email": "jdoe@example.com",     "role": "User" },
-  { "id": 3, "username": "asmith",   "email": "asmith@example.com",   "role": "User" },
-  { "id": 4, "username": "mjones",   "email": "mjones@example.com",   "role": "Manager" },
-  { "id": 5, "username": "bwilson",  "email": "bwilson@example.com",  "role": "User" }
+  { "id": 1,  "username": "admin",       "email": "admin@globex.com",        "role": "Admin" },
+  { "id": 2,  "username": "jdoe",        "email": "john.doe@acmecorp.com",   "role": "User" },
+  { "id": 3,  "username": "asmith",      "email": "anna.smith@initech.com",  "role": "User" },
+  { "id": 4,  "username": "mjones",      "email": "mike.jones@wayneent.com", "role": "Manager" },
+  { "id": 5,  "username": "bwilson",     "email": "beth.wilson@stark.io",    "role": "User" },
+  { "id": 6,  "username": "cgarcia",     "email": "carlos.garcia@hooli.com", "role": "User" },
+  { "id": 7,  "username": "dtran",       "email": "diana.tran@piedpiper.io", "role": "Manager" },
+  { "id": 8,  "username": "ewright",     "email": "eli.wright@umbrella.co",  "role": "User" },
+  { "id": 9,  "username": "fmorales",    "email": "fiona.morales@oscorp.com","role": "User" },
+  { "id": 10, "username": "gkowalski",   "email": "greg.kowalski@lexcorp.io","role": "Admin" },
+  { "id": 11, "username": "hpatel",      "email": "hina.patel@cyberdyne.ai", "role": "User" },
+  { "id": 12, "username": "iokoro",      "email": "izu.okoro@weyland.com",   "role": "User" },
+  { "id": 13, "username": "jpark",       "email": "jin.park@aperture.sci",   "role": "Manager" },
+  { "id": 14, "username": "klindgren",   "email": "karin.lindgren@abstergo.net", "role": "User" },
+  { "id": 15, "username": "lchang",      "email": "leon.chang@massiveD.com", "role": "User" },
+  { "id": 16, "username": "mnguyen",     "email": "mai.nguyen@vault-tec.io", "role": "User" },
+  { "id": 17, "username": "obanerjee",   "email": "om.banerjee@globex.com",  "role": "Manager" },
+  { "id": 18, "username": "pjohnson",    "email": "paula.johnson@initech.com","role": "User" },
+  { "id": 19, "username": "qali",        "email": "qadir.ali@acmecorp.com",  "role": "User" },
+  { "id": 20, "username": "rstone",      "email": "rachel.stone@wayneent.com","role": "Admin" }
 ]

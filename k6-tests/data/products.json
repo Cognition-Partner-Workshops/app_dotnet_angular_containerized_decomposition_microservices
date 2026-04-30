@@ -1,7 +1,22 @@
 [
-  { "id": 1, "name": "Wireless Mouse",     "price": 29.99,  "category": "Electronics" },
-  { "id": 2, "name": "USB-C Hub",          "price": 24.99,  "category": "Electronics" },
-  { "id": 3, "name": "Mechanical Keyboard", "price": 199.99, "category": "Electronics" },
-  { "id": 4, "name": "Desk Lamp",          "price": 49.99,  "category": "Office" },
-  { "id": 5, "name": "Notebook Pack",      "price": 29.99,  "category": "Office" }
+  { "id": 1,  "name": "Wireless Mouse",         "price": 29.99,  "category": "Electronics",  "sku": "ELEC-001" },
+  { "id": 2,  "name": "USB-C Hub",              "price": 24.99,  "category": "Electronics",  "sku": "ELEC-002" },
+  { "id": 3,  "name": "Mechanical Keyboard",    "price": 199.99, "category": "Electronics",  "sku": "ELEC-003" },
+  { "id": 4,  "name": "Desk Lamp",              "price": 49.99,  "category": "Office",       "sku": "OFFC-001" },
+  { "id": 5,  "name": "Notebook Pack",          "price": 29.99,  "category": "Office",       "sku": "OFFC-002" },
+  { "id": 6,  "name": "Ergonomic Chair",        "price": 349.00, "category": "Furniture",    "sku": "FURN-001" },
+  { "id": 7,  "name": "Standing Desk",          "price": 599.99, "category": "Furniture",    "sku": "FURN-002" },
+  { "id": 8,  "name": "4K Monitor",             "price": 249.99, "category": "Electronics",  "sku": "ELEC-004" },
+  { "id": 9,  "name": "Noise-Cancel Headphones","price": 29.99,  "category": "Audio",        "sku": "AUDI-001" },
+  { "id": 10, "name": "Bluetooth Speaker",      "price": 179.99, "category": "Audio",        "sku": "AUDI-002" },
+  { "id": 11, "name": "Webcam HD",              "price": 69.99,  "category": "Electronics",  "sku": "ELEC-005" },
+  { "id": 12, "name": "External SSD 1TB",       "price": 89.99,  "category": "Storage",      "sku": "STOR-001" },
+  { "id": 13, "name": "Phone Stand",            "price": 34.99,  "category": "Accessories",  "sku": "ACCS-001" },
+  { "id": 14, "name": "Sticky Notes Bulk",      "price": 14.99,  "category": "Office",       "sku": "OFFC-003" },
+  { "id": 15, "name": "Ultrawide Monitor",      "price": 599.99, "category": "Electronics",  "sku": "ELEC-006" },
+  { "id": 16, "name": "Laptop Backpack",        "price": 449.99, "category": "Accessories",  "sku": "ACCS-002" },
+  { "id": 17, "name": "Wireless Charger",       "price": 79.99,  "category": "Electronics",  "sku": "ELEC-007" },
+  { "id": 18, "name": "Pens Multipack",         "price": 8.99,   "category": "Office",       "sku": "OFFC-004" },
+  { "id": 19, "name": "Cable Organizer",        "price": 39.99,  "category": "Accessories",  "sku": "ACCS-003" },
+  { "id": 20, "name": "Curved Gaming Monitor",  "price": 999.99, "category": "Electronics",  "sku": "ELEC-008" }
 ]
