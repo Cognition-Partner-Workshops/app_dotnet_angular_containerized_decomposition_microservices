@@ -1,0 +1,7 @@
+[
+  { "id": 1, "name": "Wireless Mouse",     "price": 29.99,  "category": "Electronics" },
+  { "id": 2, "name": "USB-C Hub",          "price": 24.99,  "category": "Electronics" },
+  { "id": 3, "name": "Mechanical Keyboard", "price": 199.99, "category": "Electronics" },
+  { "id": 4, "name": "Desk Lamp",          "price": 49.99,  "category": "Office" },
+  { "id": 5, "name": "Notebook Pack",      "price": 29.99,  "category": "Office" }
+]

@@ -1,0 +1,7 @@
+[
+  { "id": 1, "customerId": 1, "productId": 1, "quantity": 2, "totalAmount": 59.98  },
+  { "id": 2, "customerId": 2, "productId": 3, "quantity": 1, "totalAmount": 199.99 },
+  { "id": 3, "customerId": 3, "productId": 2, "quantity": 5, "totalAmount": 124.95 },
+  { "id": 4, "customerId": 4, "productId": 5, "quantity": 3, "totalAmount": 89.97  },
+  { "id": 5, "customerId": 5, "productId": 4, "quantity": 1, "totalAmount": 49.99  }
+]
