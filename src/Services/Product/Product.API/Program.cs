@@ -1,5 +1,6 @@
 using Product.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Shared.Monitoring.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddHealthChecks();
 builder.Services.AddDbContext<ProductDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAppInsightsMonitoring(builder.Configuration, "ProductService");
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -19,6 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAppInsightsMonitoring();
 app.MapControllers();
 app.MapHealthChecks("/healthz");
 

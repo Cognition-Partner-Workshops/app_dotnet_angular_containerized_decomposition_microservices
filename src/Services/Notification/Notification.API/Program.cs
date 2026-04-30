@@ -3,6 +3,7 @@ using Notification.Domain.Interfaces;
 using Notification.Infrastructure.Data;
 using Notification.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Shared.Monitoring.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<NotificationRenderer>();
 builder.Services.AddScoped<OrderEventConsumer>();
 
+builder.Services.AddAppInsightsMonitoring(builder.Configuration, "NotificationService");
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -32,6 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAppInsightsMonitoring();
 app.MapControllers();
 app.MapHealthChecks("/healthz");
 

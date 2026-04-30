@@ -1,3 +1,5 @@
+using Shared.Monitoring.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddReverseProxy()
@@ -5,8 +7,11 @@ builder.Services.AddReverseProxy()
 
 builder.Services.AddHealthChecks();
 
+builder.Services.AddAppInsightsMonitoring(builder.Configuration, "ApiGateway");
+
 var app = builder.Build();
 
+app.UseAppInsightsMonitoring();
 app.MapReverseProxy();
 app.MapHealthChecks("/healthz");
 
