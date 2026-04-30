@@ -81,6 +81,23 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=notificationdb;Username=postgres;Password=postgres
 
+  monitoring-agent:
+    build:
+      context: .
+      dockerfile: Functions/Monitoring/Monitoring.Functions/Dockerfile
+    ports:
+      - "7071:80"
+    environment:
+      - AzureWebJobsStorage=UseDevelopmentStorage=true
+      - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+      - APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING:-}
+      - Monitoring__ApplicationInsightsConnectionString=${APPLICATIONINSIGHTS_CONNECTION_STRING:-}
+      - Monitoring__WorkspaceId=${LOG_ANALYTICS_WORKSPACE_ID:-}
+      - Monitoring__AzureOpenAIEndpoint=${AZURE_OPENAI_ENDPOINT:-}
+      - Monitoring__AzureOpenAIDeployment=${AZURE_OPENAI_DEPLOYMENT:-gpt-4o}
+      - Monitoring__AlertWebhookUrl=${ALERT_WEBHOOK_URL:-}
+      - Monitoring__MonitoredServices=identity-service,customer-service,order-service,product-service,notification-service,api-gateway
+
   postgres:
     image: postgres:16-alpine
     ports:
