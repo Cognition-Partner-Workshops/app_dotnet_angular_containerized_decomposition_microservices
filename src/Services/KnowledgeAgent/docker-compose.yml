@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  knowledge-agent-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5010:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SharePoint__TenantId=${SHAREPOINT_TENANT_ID}
+      - SharePoint__ClientId=${SHAREPOINT_CLIENT_ID}
+      - SharePoint__ClientSecret=${SHAREPOINT_CLIENT_SECRET}
+      - SharePoint__SiteId=${SHAREPOINT_SITE_ID}
+      - SharePoint__DriveId=${SHAREPOINT_DRIVE_ID}
+      - VectorStore__Host=qdrant
+      - VectorStore__Port=6334
+      - OpenAI__ApiKey=${OPENAI_API_KEY}
+      - OpenAI__Endpoint=${OPENAI_ENDPOINT}
+      - AppInsights__ConnectionString=${APPINSIGHTS_CONNECTION_STRING}
+      - AppInsights__ApiKey=${APPINSIGHTS_API_KEY}
+      - AppInsights__ApplicationId=${APPINSIGHTS_APPLICATION_ID}
+      - Email__SmtpHost=${SMTP_HOST}
+      - Email__SmtpUsername=${SMTP_USERNAME}
+      - Email__SmtpPassword=${SMTP_PASSWORD}
+      - Email__FromAddress=${EMAIL_FROM_ADDRESS}
+    depends_on:
+      - qdrant
+    networks:
+      - knowledge-agent-network
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - knowledge-agent-network
+
+volumes:
+  qdrant_data:
+
+networks:
+  knowledge-agent-network:
+    driver: bridge
