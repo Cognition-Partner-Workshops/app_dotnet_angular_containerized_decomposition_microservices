@@ -1,0 +1,22 @@
+[
+  { "id": 1,  "customerId": 1,  "productId": 3,  "quantity": 1, "totalAmount": 199.99 },
+  { "id": 2,  "customerId": 5,  "productId": 1,  "quantity": 2, "totalAmount": 59.98  },
+  { "id": 3,  "customerId": 3,  "productId": 7,  "quantity": 1, "totalAmount": 349.00 },
+  { "id": 4,  "customerId": 10, "productId": 2,  "quantity": 3, "totalAmount": 74.97  },
+  { "id": 5,  "customerId": 7,  "productId": 5,  "quantity": 1, "totalAmount": 29.99  },
+  { "id": 6,  "customerId": 12, "productId": 9,  "quantity": 4, "totalAmount": 119.96 },
+  { "id": 7,  "customerId": 2,  "productId": 12, "quantity": 1, "totalAmount": 89.99  },
+  { "id": 8,  "customerId": 15, "productId": 4,  "quantity": 2, "totalAmount": 99.98  },
+  { "id": 9,  "customerId": 8,  "productId": 15, "quantity": 1, "totalAmount": 599.99 },
+  { "id": 10, "customerId": 19, "productId": 6,  "quantity": 5, "totalAmount": 149.95 },
+  { "id": 11, "customerId": 4,  "productId": 11, "quantity": 2, "totalAmount": 139.98 },
+  { "id": 12, "customerId": 16, "productId": 8,  "quantity": 1, "totalAmount": 249.99 },
+  { "id": 13, "customerId": 6,  "productId": 14, "quantity": 3, "totalAmount": 44.97  },
+  { "id": 14, "customerId": 14, "productId": 10, "quantity": 1, "totalAmount": 179.99 },
+  { "id": 15, "customerId": 9,  "productId": 13, "quantity": 2, "totalAmount": 69.98  },
+  { "id": 16, "customerId": 20, "productId": 16, "quantity": 1, "totalAmount": 449.99 },
+  { "id": 17, "customerId": 11, "productId": 18, "quantity": 6, "totalAmount": 53.94  },
+  { "id": 18, "customerId": 13, "productId": 20, "quantity": 1, "totalAmount": 999.99 },
+  { "id": 19, "customerId": 17, "productId": 17, "quantity": 2, "totalAmount": 159.98 },
+  { "id": 20, "customerId": 18, "productId": 19, "quantity": 1, "totalAmount": 39.99  }
+]

@@ -1,0 +1,22 @@
+[
+  { "id": 1,  "name": "Alice Johnson",       "email": "alice.j@techstart.io",     "phone": "555-0101", "tier": "Gold" },
+  { "id": 2,  "name": "Bob Martinez",        "email": "bob.m@retailhub.com",      "phone": "555-0102", "tier": "Silver" },
+  { "id": 3,  "name": "Carol Lee",           "email": "carol.lee@freshmkt.com",   "phone": "555-0103", "tier": "Bronze" },
+  { "id": 4,  "name": "David Kim",           "email": "david.kim@luxbrand.co",    "phone": "555-0104", "tier": "Gold" },
+  { "id": 5,  "name": "Eva Brown",           "email": "eva.brown@ecogoods.io",    "phone": "555-0105", "tier": "Silver" },
+  { "id": 6,  "name": "Frank Nguyen",        "email": "frank.n@quickship.com",    "phone": "555-0106", "tier": "Bronze" },
+  { "id": 7,  "name": "Grace Okafor",        "email": "grace.o@artisan.shop",     "phone": "555-0107", "tier": "Gold" },
+  { "id": 8,  "name": "Hector Ruiz",         "email": "hector.r@sportzone.com",   "phone": "555-0108", "tier": "Silver" },
+  { "id": 9,  "name": "Irene Sato",          "email": "irene.s@bookworm.co",      "phone": "555-0109", "tier": "Bronze" },
+  { "id": 10, "name": "James Patel",         "email": "james.p@gadgetworld.io",   "phone": "555-0110", "tier": "Gold" },
+  { "id": 11, "name": "Katya Volkov",        "email": "katya.v@homegoods.com",    "phone": "555-0111", "tier": "Silver" },
+  { "id": 12, "name": "Leo Chen",            "email": "leo.c@petcorner.shop",     "phone": "555-0112", "tier": "Bronze" },
+  { "id": 13, "name": "Maria Fernandez",     "email": "maria.f@stylehub.com",     "phone": "555-0113", "tier": "Gold" },
+  { "id": 14, "name": "Nils Eriksson",       "email": "nils.e@outdooradv.io",     "phone": "555-0114", "tier": "Silver" },
+  { "id": 15, "name": "Olivia Thompson",     "email": "olivia.t@gourmet.co",      "phone": "555-0115", "tier": "Bronze" },
+  { "id": 16, "name": "Priya Sharma",        "email": "priya.s@wellness.io",      "phone": "555-0116", "tier": "Gold" },
+  { "id": 17, "name": "Quinn Murphy",        "email": "quinn.m@smartliving.com",  "phone": "555-0117", "tier": "Silver" },
+  { "id": 18, "name": "Raj Deshmukh",        "email": "raj.d@craftbrew.co",       "phone": "555-0118", "tier": "Bronze" },
+  { "id": 19, "name": "Sofia Andersson",     "email": "sofia.a@greenliving.io",   "phone": "555-0119", "tier": "Gold" },
+  { "id": 20, "name": "Tariq Hassan",        "email": "tariq.h@fitgear.com",      "phone": "555-0120", "tier": "Silver" }
+]
