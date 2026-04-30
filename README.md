@@ -14,7 +14,7 @@ The monolith's bounded contexts are decomposed into the following independently 
 ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
 │  Identity    │  │  Customer    │  │   Order      │
 │  Service     │  │  Service     │  │   Service    │
-│  (.NET 10)   │  │  (.NET 10)   │  │  (.NET 10)   │
+│  (.NET 8)   │  │  (.NET 8)   │  │  (.NET 8)   │
 └──────┬───────┘  └──────┬───────┘  └──────┬───────┘
        │                 │                 │
        └────────────┬────┘─────────────────┘
@@ -27,7 +27,7 @@ The monolith's bounded contexts are decomposed into the following independently 
 ┌──────────────┐  ┌┴─────────────┐
 │  Product     │  │ Notification │
 │  Service     │  │  Service     │
-│  (.NET 10)   │  │  (.NET 10)   │
+│  (.NET 8)   │  │  (.NET 8)   │
 └──────────────┘  └──────────────┘
 ```
 
@@ -82,7 +82,7 @@ src/
 
 ## Technology Stack
 
-- **.NET 10** — ASP.NET Core Web API per service
+- **.NET 8** — ASP.NET Core Web API per service
 - **Entity Framework Core** — per-service database (database-per-service pattern)
 - **YARP** — API gateway / reverse proxy
 - **RabbitMQ** — async messaging between services
