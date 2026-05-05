@@ -9,6 +9,10 @@ namespace Notification.API.Services;
 /// </summary>
 public class NotificationRenderer
 {
+    /// <summary>
+    /// Formats a monetary amount for display. The amount is expected in the
+    /// base currency unit (e.g. dollars), matching the OrderPlacedEvent contract.
+    /// </summary>
     private static string FormatCurrency(decimal amount)
     {
         return amount.ToString("C2");
