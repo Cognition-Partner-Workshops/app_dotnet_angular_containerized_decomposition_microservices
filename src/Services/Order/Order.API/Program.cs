@@ -13,6 +13,23 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 
 var app = builder.Build();
 
+for (var retries = 0; ; retries++)
+{
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+        db.Database.EnsureCreated();
+        break;
+    }
+    catch (Exception) when (retries < 5)
+    {
+        Thread.Sleep(2000);
+    }
+}
+
+app.UseMiddleware<Shared.Infrastructure.Middleware.CorrelationIdMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

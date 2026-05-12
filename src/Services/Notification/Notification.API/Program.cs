@@ -20,11 +20,22 @@ builder.Services.AddScoped<OrderEventConsumer>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+for (var retries = 0; ; retries++)
 {
-    var db = scope.ServiceProvider.GetRequiredService<NotificationDbContext>();
-    db.Database.EnsureCreated();
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<NotificationDbContext>();
+        db.Database.EnsureCreated();
+        break;
+    }
+    catch (Exception) when (retries < 5)
+    {
+        Thread.Sleep(2000);
+    }
 }
+
+app.UseMiddleware<Shared.Infrastructure.Middleware.CorrelationIdMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

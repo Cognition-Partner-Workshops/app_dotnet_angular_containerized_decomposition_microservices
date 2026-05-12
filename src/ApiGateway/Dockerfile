@@ -5,8 +5,10 @@ EXPOSE 5000
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["ApiGateway/ApiGateway.csproj", "ApiGateway/"]
+COPY ["Shared/Shared.Infrastructure/Shared.Infrastructure.csproj", "Shared/Shared.Infrastructure/"]
 RUN dotnet restore "ApiGateway/ApiGateway.csproj"
 COPY ApiGateway/ ApiGateway/
+COPY Shared/Shared.Infrastructure/ Shared/Shared.Infrastructure/
 WORKDIR "/src/ApiGateway"
 RUN dotnet build -c Release -o /app/build
 

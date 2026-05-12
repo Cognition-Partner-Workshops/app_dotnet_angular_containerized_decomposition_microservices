@@ -7,6 +7,8 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
+app.UseMiddleware<Shared.Infrastructure.Middleware.CorrelationIdMiddleware>();
+
 app.MapReverseProxy();
 app.MapHealthChecks("/healthz");
 
