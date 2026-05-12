@@ -3,6 +3,7 @@ using Notification.Domain.Interfaces;
 using Notification.Infrastructure.Data;
 using Notification.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Shared.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<CorrelationIdMiddleware>();
 app.MapControllers();
 app.MapHealthChecks("/healthz");
 
