@@ -26,6 +26,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
+app.UseMiddleware<Shared.Infrastructure.Middleware.CorrelationIdMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

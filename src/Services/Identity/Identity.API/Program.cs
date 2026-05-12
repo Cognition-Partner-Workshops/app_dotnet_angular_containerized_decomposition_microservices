@@ -13,6 +13,14 @@ builder.Services.AddDbContext<IdentityDbContext>(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+    db.Database.EnsureCreated();
+}
+
+app.UseMiddleware<Shared.Infrastructure.Middleware.CorrelationIdMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
