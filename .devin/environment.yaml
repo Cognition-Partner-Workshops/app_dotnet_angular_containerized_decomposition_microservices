@@ -1,0 +1,43 @@
+# https://docs.devin.ai/onboard-devin/environment-yaml
+# Commands run from the repo root.
+
+# One-time setup: install .NET 10 SDK and Docker (required for build and runtime).
+initialize: |
+  wget -q https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
+  chmod +x /tmp/dotnet-install.sh
+  /tmp/dotnet-install.sh --channel 10.0 --install-dir $HOME/.dotnet
+  echo 'export PATH="$HOME/.dotnet:$PATH"' >> ~/.bashrc
+  echo 'export DOTNET_ROOT="$HOME/.dotnet"' >> ~/.bashrc
+  export PATH="$HOME/.dotnet:$PATH"
+  export DOTNET_ROOT="$HOME/.dotnet"
+
+# Install project dependencies.
+maintenance: |
+  export PATH="$HOME/.dotnet:$PATH"
+  export DOTNET_ROOT="$HOME/.dotnet"
+  cd src && dotnet restore Microservices.sln
+
+knowledge:
+  - name: build
+    contents: |
+      cd src && dotnet build Microservices.sln
+  - name: test
+    contents: |
+      cd src && dotnet test Tests/Microservices.Tests/Microservices.Tests.csproj
+  - name: run
+    contents: |
+      cd src && docker compose up --build -d
+      # Health checks: curl http://localhost:{5000..5005}/healthz
+      # Notification service may need a restart if postgres isn't ready:
+      #   docker compose restart notification-service
+  - name: lint
+    contents: |
+      cd src && dotnet build Microservices.sln --warnaserror
+  - name: project-structure
+    contents: |
+      .NET 10 microservices solution at src/Microservices.sln.
+      Services: Identity (5001), Customer (5002), Order (5003), Product (5004), Notification (5005).
+      API Gateway (YARP) on port 5000.
+      Shared libraries: Shared.Contracts (DTOs/events), Shared.Infrastructure (middleware).
+      Tests: src/Tests/Microservices.Tests (xUnit).
+      Docker Compose for local runtime with PostgreSQL and RabbitMQ.
