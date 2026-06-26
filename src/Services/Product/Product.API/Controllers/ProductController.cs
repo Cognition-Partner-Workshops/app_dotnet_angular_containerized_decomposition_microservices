@@ -82,7 +82,8 @@ public class ProductController : ControllerBase
         _db.Products.Add(product);
         await _db.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetById), new { id = product.Id }, MapToVM(product));
+        // Location reflects the public gateway path; the service itself receives /api/products stripped.
+        return Created($"/api/products/{product.Id}", MapToVM(product));
     }
 
     // External: PUT /api/products/{id}  ->  PUT /{id}
@@ -130,11 +131,17 @@ public class ProductController : ControllerBase
     [HttpDelete("/{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(int id)
     {
         var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == id);
         if (product == null)
             return NotFound(id);
+
+        // Parent->Children uses DeleteBehavior.Restrict; deleting a parent with children
+        // would raise an FK violation, so reject it explicitly.
+        if (await _db.Products.AnyAsync(p => p.ParentId == id))
+            return Conflict($"Product {id} has child products and cannot be deleted.");
 
         _db.Products.Remove(product);
         await _db.SaveChangesAsync();
