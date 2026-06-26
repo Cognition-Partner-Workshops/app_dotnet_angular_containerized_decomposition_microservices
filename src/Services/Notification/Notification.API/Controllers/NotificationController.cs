@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notification.API.Services;
 using Notification.Domain.Interfaces;
@@ -6,7 +7,6 @@ using Shared.Contracts.Events;
 namespace Notification.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
 public class NotificationController : ControllerBase
 {
     private readonly INotificationRepository _repository;
@@ -23,7 +23,8 @@ public class NotificationController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
+    [Authorize]
+    [HttpGet("/")]
     public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
     {
         var notifications = await _repository.GetAllAsync(page, pageSize);
@@ -41,7 +42,8 @@ public class NotificationController : ControllerBase
         }));
     }
 
-    [HttpGet("{id:guid}")]
+    [Authorize]
+    [HttpGet("/{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var notification = await _repository.GetByIdAsync(id);
@@ -68,7 +70,8 @@ public class NotificationController : ControllerBase
     /// Returns the rendered HTML email preview for a notification.
     /// Use this endpoint to visually inspect notification output.
     /// </summary>
-    [HttpGet("{id:guid}/preview")]
+    [Authorize]
+    [HttpGet("/{id:guid}/preview")]
     [Produces("text/html")]
     public async Task<IActionResult> GetPreview(Guid id)
     {
@@ -87,7 +90,7 @@ public class NotificationController : ControllerBase
     /// In production this would be a RabbitMQ consumer; this endpoint
     /// enables local testing without a message broker.
     /// </summary>
-    [HttpPost("events/order-placed")]
+    [HttpPost("/events/order-placed")]
     public async Task<IActionResult> ReceiveOrderPlacedEvent([FromBody] OrderPlacedEventDto dto)
     {
         var orderEvent = new OrderPlacedEvent(
@@ -101,7 +104,7 @@ public class NotificationController : ControllerBase
         return CreatedAtAction(
             nameof(GetPreview),
             new { id = notification.Id },
-            new { notification.Id, PreviewUrl = $"/api/notification/{notification.Id}/preview" });
+            new { notification.Id, PreviewUrl = $"/{notification.Id}/preview" });
     }
 }
 
