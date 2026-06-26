@@ -62,6 +62,8 @@ public class CustomerController : ControllerBase
             ModelState.AddModelError(nameof(model.Email), "Email cannot be empty");
         if (string.IsNullOrWhiteSpace(model.Gender))
             ModelState.AddModelError(nameof(model.Gender), "Gender cannot be empty");
+        else if (!Enum.TryParse<GenderEnum>(model.Gender, ignoreCase: true, out _))
+            ModelState.AddModelError(nameof(model.Gender), "Invalid gender value");
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -102,6 +104,8 @@ public class CustomerController : ControllerBase
             ModelState.AddModelError(nameof(model.Email), "Email cannot be empty");
         if (string.IsNullOrWhiteSpace(model.Gender))
             ModelState.AddModelError(nameof(model.Gender), "Gender cannot be empty");
+        else if (!Enum.TryParse<GenderEnum>(model.Gender, ignoreCase: true, out _))
+            ModelState.AddModelError(nameof(model.Gender), "Invalid gender value");
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
