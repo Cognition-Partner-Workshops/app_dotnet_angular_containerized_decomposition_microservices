@@ -66,6 +66,11 @@ public class IdentityService : IIdentityService
             return new LoginResult { Success = false, ErrorMessage = "Invalid username or password." };
         }
 
+        if (!user.IsEnabled)
+        {
+            return new LoginResult { Success = false, ErrorMessage = "This account has been disabled." };
+        }
+
         var token = GenerateJwtToken(user);
 
         return new LoginResult { Success = true, Token = token };
