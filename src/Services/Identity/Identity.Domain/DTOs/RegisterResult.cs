@@ -1,0 +1,8 @@
+namespace Identity.Domain.DTOs;
+
+public class RegisterResult
+{
+    public bool Success { get; set; }
+    public string? ErrorMessage { get; set; }
+    public AppUserDto? User { get; set; }
+}
