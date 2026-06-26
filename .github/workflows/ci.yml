@@ -15,7 +15,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          global-json-file: global.json
+          global-json-file: src/global.json
 
       - name: Build gateway + all services (Release)
         working-directory: src
