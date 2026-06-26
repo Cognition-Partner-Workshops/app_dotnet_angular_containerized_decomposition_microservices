@@ -1,0 +1,36 @@
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - customer-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  customer-service:
+    build:
+      context: .
+      dockerfile: Services/Customer/Customer.API/Dockerfile
+    ports:
+      - "5002:5002"
+    depends_on:
+      - postgres
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=customerdb;Username=postgres;Password=postgres
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: customerdb
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
