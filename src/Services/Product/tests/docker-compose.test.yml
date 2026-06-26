@@ -26,6 +26,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=productdb;Database=productdb;Username=postgres;Password=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/5004' || exit 1"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
 
   api-gateway:
     build:
@@ -34,7 +39,8 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - product-service
+      product-service:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ReverseProxy__Clusters__product-cluster__Destinations__destination1__Address=http://product-service:5004/

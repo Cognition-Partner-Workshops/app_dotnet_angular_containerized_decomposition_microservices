@@ -33,6 +33,28 @@ assert_status() {
     fi
 }
 
+# Wait for services to be ready
+wait_for_service() {
+    local url="$1"
+    local name="$2"
+    local retries=30
+    local i=0
+    echo "Waiting for $name at $url ..."
+    while [ $i -lt $retries ]; do
+        if curl -sf -o /dev/null "$url"; then
+            echo "$name is ready"
+            return 0
+        fi
+        i=$((i + 1))
+        sleep 1
+    done
+    echo "ERROR: $name not ready after ${retries}s"
+    return 1
+}
+
+wait_for_service "$SERVICE_URL/healthz" "product-service"
+wait_for_service "$GATEWAY_URL/healthz" "api-gateway"
+
 TOKEN=$(generate_jwt)
 echo "Generated JWT token"
 echo "Testing against gateway: $GATEWAY_URL"
@@ -65,17 +87,23 @@ CATEGORY_ID=$(echo "$BODY" | grep -o '"id":[0-9]*' | head -1 | cut -d: -f2)
 echo "Created category ID: $CATEGORY_ID"
 
 # Test 5: Create a product with valid JWT → 201
-RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$GATEWAY_URL/api/products" \
-    -H "Authorization: Bearer $TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "{\"name\":\"Test Product\",\"description\":\"A test product\",\"icon\":\"test-icon\",\"buyingPrice\":10.50,\"sellingPrice\":15.99,\"unitsInStock\":100,\"isActive\":true,\"isDiscontinued\":false,\"parentId\":null,\"productCategoryId\":$CATEGORY_ID}")
-STATUS=$(echo "$RESPONSE" | tail -1)
-BODY=$(echo "$RESPONSE" | sed '$d')
-assert_status "POST /api/products with JWT → 201" "201" "$STATUS"
+if [ -z "$CATEGORY_ID" ]; then
+    echo "FAIL: POST /api/products — skipped, no category ID from previous step"
+    FAIL=$((FAIL + 1))
+    PRODUCT_ID=""
+else
+    RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$GATEWAY_URL/api/products" \
+        -H "Authorization: Bearer $TOKEN" \
+        -H "Content-Type: application/json" \
+        -d "{\"name\":\"Test Product\",\"description\":\"A test product\",\"icon\":\"test-icon\",\"buyingPrice\":10.50,\"sellingPrice\":15.99,\"unitsInStock\":100,\"isActive\":true,\"isDiscontinued\":false,\"parentId\":null,\"productCategoryId\":$CATEGORY_ID}")
+    STATUS=$(echo "$RESPONSE" | tail -1)
+    BODY=$(echo "$RESPONSE" | sed '$d')
+    assert_status "POST /api/products with JWT → 201" "201" "$STATUS"
 
-# Extract product ID
-PRODUCT_ID=$(echo "$BODY" | grep -o '"id":[0-9]*' | head -1 | cut -d: -f2)
-echo "Created product ID: $PRODUCT_ID"
+    # Extract product ID
+    PRODUCT_ID=$(echo "$BODY" | grep -o '"id":[0-9]*' | head -1 | cut -d: -f2)
+    echo "Created product ID: $PRODUCT_ID"
+fi
 
 # Test 6: GET /api/products with valid JWT → 200 (list includes product)
 RESPONSE=$(curl -s -w "\n%{http_code}" "$GATEWAY_URL/api/products" \
@@ -94,9 +122,14 @@ else
 fi
 
 # Test 7: GET /api/products/{id} with valid JWT → 200
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$GATEWAY_URL/api/products/$PRODUCT_ID" \
-    -H "Authorization: Bearer $TOKEN")
-assert_status "GET /api/products/$PRODUCT_ID with JWT → 200" "200" "$STATUS"
+if [ -z "$PRODUCT_ID" ]; then
+    echo "FAIL: GET /api/products/{id} — skipped, no product ID from previous step"
+    FAIL=$((FAIL + 1))
+else
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$GATEWAY_URL/api/products/$PRODUCT_ID" \
+        -H "Authorization: Bearer $TOKEN")
+    assert_status "GET /api/products/$PRODUCT_ID with JWT → 200" "200" "$STATUS"
+fi
 
 echo "---"
 echo "Results: $PASS passed, $FAIL failed"
