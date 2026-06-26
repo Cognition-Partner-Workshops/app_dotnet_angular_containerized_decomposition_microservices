@@ -41,11 +41,22 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Auto-create database schema
+// Auto-create database schema (with retry for container startup ordering)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
-    db.Database.EnsureCreated();
+    for (var i = 0; i < 10; i++)
+    {
+        try
+        {
+            db.Database.EnsureCreated();
+            break;
+        }
+        catch (Exception) when (i < 9)
+        {
+            Thread.Sleep(2000);
+        }
+    }
 }
 
 if (app.Environment.IsDevelopment())
