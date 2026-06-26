@@ -58,6 +58,8 @@ public class CustomerController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(model.Name))
             ModelState.AddModelError(nameof(model.Name), "Customer name cannot be empty");
+        if (string.IsNullOrWhiteSpace(model.Email))
+            ModelState.AddModelError(nameof(model.Email), "Email cannot be empty");
         if (string.IsNullOrWhiteSpace(model.Gender))
             ModelState.AddModelError(nameof(model.Gender), "Gender cannot be empty");
         if (!ModelState.IsValid)
@@ -96,6 +98,8 @@ public class CustomerController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(model.Name))
             ModelState.AddModelError(nameof(model.Name), "Customer name cannot be empty");
+        if (string.IsNullOrWhiteSpace(model.Email))
+            ModelState.AddModelError(nameof(model.Email), "Email cannot be empty");
         if (string.IsNullOrWhiteSpace(model.Gender))
             ModelState.AddModelError(nameof(model.Gender), "Gender cannot be empty");
         if (!ModelState.IsValid)
