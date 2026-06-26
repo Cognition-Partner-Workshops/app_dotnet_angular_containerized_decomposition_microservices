@@ -121,6 +121,9 @@ public class ProductController : ControllerBase
         var entity = await _db.Products.FindAsync(id);
         if (entity is null) return NotFound();
 
+        var category = await _db.ProductCategories.FindAsync(request.ProductCategoryId);
+        if (category is null) return BadRequest("Invalid ProductCategoryId");
+
         entity.Name = request.Name;
         entity.Description = request.Description;
         entity.Icon = request.Icon;
