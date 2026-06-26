@@ -13,6 +13,13 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 
 var app = builder.Build();
 
+// Auto-create database schema (initial migration via EnsureCreated)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    db.Database.EnsureCreated();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
