@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notification.API.Services;
 using Notification.Domain.Interfaces;
@@ -6,6 +7,7 @@ using Shared.Contracts.Events;
 namespace Notification.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class NotificationController : ControllerBase
 {
