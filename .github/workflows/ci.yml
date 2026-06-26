@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build (Release)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: src/global.json
+
+      - name: Build gateway + all services (Release)
+        working-directory: src
+        run: |
+          set -euo pipefail
+          for proj in \
+            ApiGateway/ApiGateway.csproj \
+            Services/Identity/Identity.API/Identity.API.csproj \
+            Services/Customer/Customer.API/Customer.API.csproj \
+            Services/Order/Order.API/Order.API.csproj \
+            Services/Product/Product.API/Product.API.csproj \
+            Services/Notification/Notification.API/Notification.API.csproj; do
+            echo "::group::build $proj"
+            dotnet build "$proj" -c Release --nologo
+            echo "::endgroup::"
+          done
+
+  e2e:
+    name: Full-stack E2E smoke (gateway)
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run E2E smoke test
+        run: ./scripts/e2e-smoke.sh
