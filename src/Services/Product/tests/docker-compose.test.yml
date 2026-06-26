@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  productdb:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: productdb
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  product-service:
+    build:
+      context: ../../../
+      dockerfile: Services/Product/Product.API/Dockerfile
+    ports:
+      - "5004:5004"
+    depends_on:
+      productdb:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=productdb;Database=productdb;Username=postgres;Password=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/5004' || exit 1"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  api-gateway:
+    build:
+      context: ../../../
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      product-service:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ReverseProxy__Clusters__product-cluster__Destinations__destination1__Address=http://product-service:5004/
