@@ -75,6 +75,8 @@ public class CustomerController : ControllerBase
             Address = model.Address,
             City = model.City,
             Gender = ParseGender(model.Gender),
+            CreatedBy = CurrentUser(),
+            UpdatedBy = CurrentUser(),
             CreatedDate = DateTime.UtcNow,
             UpdatedDate = DateTime.UtcNow
         };
@@ -115,6 +117,7 @@ public class CustomerController : ControllerBase
         customer.Address = model.Address;
         customer.City = model.City;
         customer.Gender = ParseGender(model.Gender);
+        customer.UpdatedBy = CurrentUser();
         customer.UpdatedDate = DateTime.UtcNow;
 
         await _dbContext.SaveChangesAsync();
@@ -150,4 +153,13 @@ public class CustomerController : ControllerBase
 
     private static GenderEnum ParseGender(string? value) =>
         Enum.TryParse<GenderEnum>(value, ignoreCase: true, out var gender) ? gender : GenderEnum.None;
+
+    // CreatedBy/UpdatedBy column is varchar(40); truncate the JWT identity to fit.
+    private string? CurrentUser()
+    {
+        var name = User.Identity?.Name;
+        if (string.IsNullOrEmpty(name))
+            return null;
+        return name.Length > 40 ? name[..40] : name;
+    }
 }
