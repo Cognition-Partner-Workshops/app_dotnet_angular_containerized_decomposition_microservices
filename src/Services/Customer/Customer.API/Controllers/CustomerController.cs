@@ -45,13 +45,14 @@ public class CustomerController : ControllerBase
             PhoneNumber = request.PhoneNumber,
             Address = request.Address,
             City = request.City,
-            Gender = Enum.TryParse<Gender>(request.Gender, true, out var g) ? g : Gender.None,
+            Gender = ParseGender(request.Gender),
             CreatedDate = DateTime.UtcNow,
             UpdatedDate = DateTime.UtcNow
         };
 
         var created = await _repository.AddAsync(customer);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, ToDto(created));
+        var dto = ToDto(created);
+        return Created($"/api/customers/{created.Id}", dto);
     }
 
     [HttpPut("{id:int}")]
@@ -66,7 +67,7 @@ public class CustomerController : ControllerBase
         existing.PhoneNumber = request.PhoneNumber;
         existing.Address = request.Address;
         existing.City = request.City;
-        existing.Gender = Enum.TryParse<Gender>(request.Gender, true, out var g) ? g : Gender.None;
+        existing.Gender = ParseGender(request.Gender);
         existing.UpdatedDate = DateTime.UtcNow;
 
         await _repository.UpdateAsync(existing);
@@ -83,6 +84,9 @@ public class CustomerController : ControllerBase
         await _repository.DeleteAsync(id);
         return NoContent();
     }
+
+    private static Gender ParseGender(string? value) =>
+        Enum.TryParse<Gender>(value, true, out var g) && Enum.IsDefined(g) ? g : Gender.None;
 
     private static CustomerDto ToDto(Domain.Entities.Customer c) =>
         new(c.Id, c.Name, c.Email, c.PhoneNumber, c.Address, c.City,
