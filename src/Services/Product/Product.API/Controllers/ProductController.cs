@@ -115,10 +115,10 @@ public class ProductController : ControllerBase
         product.IsDiscontinued = model.IsDiscontinued;
         product.UpdatedDate = DateTime.UtcNow;
 
-        if (!string.IsNullOrWhiteSpace(model.ProductCategoryName) &&
-            model.ProductCategoryName != product.ProductCategory?.Name)
+        var resolvedCategory = await ResolveCategoryAsync(model.ProductCategoryName);
+        if (resolvedCategory.Name != product.ProductCategory?.Name)
         {
-            product.ProductCategory = await ResolveCategoryAsync(model.ProductCategoryName);
+            product.ProductCategory = resolvedCategory;
         }
 
         await _db.SaveChangesAsync();
