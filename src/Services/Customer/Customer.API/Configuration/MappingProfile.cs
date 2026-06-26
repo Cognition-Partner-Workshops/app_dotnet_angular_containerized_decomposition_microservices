@@ -10,6 +10,6 @@ public class MappingProfile : Profile
         CreateMap<Domain.Entities.Customer, CustomerVM>()
             .ForMember(d => d.Gender, opt => opt.MapFrom(s => s.Gender.ToString()));
         CreateMap<CustomerVM, Domain.Entities.Customer>()
-            .ForMember(d => d.Gender, opt => opt.MapFrom(s => Enum.Parse<Domain.Entities.Gender>(s.Gender ?? "None")));
+            .ForMember(d => d.Gender, opt => opt.MapFrom(s => Enum.Parse<Domain.Entities.Gender>(s.Gender ?? "None", ignoreCase: true)));
     }
 }
