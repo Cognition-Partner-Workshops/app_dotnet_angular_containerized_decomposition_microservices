@@ -116,7 +116,7 @@ public class ProductController : ControllerBase
         product.UpdatedDate = DateTime.UtcNow;
 
         if (!string.IsNullOrWhiteSpace(model.ProductCategoryName) &&
-            model.ProductCategoryName != product.ProductCategory.Name)
+            model.ProductCategoryName != product.ProductCategory?.Name)
         {
             product.ProductCategory = await ResolveCategoryAsync(model.ProductCategoryName);
         }
