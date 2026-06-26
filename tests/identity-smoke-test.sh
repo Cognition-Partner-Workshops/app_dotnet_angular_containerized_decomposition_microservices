@@ -23,7 +23,7 @@ wait_for_service() {
             echo "$name is ready."
             return 0
         fi
-        ((attempt++))
+        ((++attempt))
         sleep 2
     done
     echo "$name failed to start after $((max_attempts * 2))s"
