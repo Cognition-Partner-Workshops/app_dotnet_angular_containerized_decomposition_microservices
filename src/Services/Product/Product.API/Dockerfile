@@ -18,6 +18,7 @@ FROM build AS publish
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:5004
