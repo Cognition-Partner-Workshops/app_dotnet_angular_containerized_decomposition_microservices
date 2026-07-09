@@ -25,7 +25,12 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 // Liveness: process is up and serving requests.
+// /healthz is kept as an alias for consistency with the other services.
 app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    Predicate = _ => false
+});
+app.MapHealthChecks("/healthz", new HealthCheckOptions
 {
     Predicate = _ => false
 });
