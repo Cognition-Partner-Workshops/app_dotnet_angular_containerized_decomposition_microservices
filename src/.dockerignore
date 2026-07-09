@@ -1,0 +1,32 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# IDE / editor
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.suo
+
+# Version control
+**/.git/
+**/.gitignore
+**/.gitattributes
+
+# Docker
+**/Dockerfile*
+**/.dockerignore
+**/docker-compose*.yml
+
+# Local config & secrets (must be provided via environment variables)
+**/.env
+**/.env.*
+**/appsettings.*.local.json
+**/secrets.json
+
+# Logs & OS cruft
+**/*.log
+**/.DS_Store
