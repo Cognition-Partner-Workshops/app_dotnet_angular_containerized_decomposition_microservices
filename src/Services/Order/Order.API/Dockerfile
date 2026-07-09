@@ -26,9 +26,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Listening port is configurable; nothing host/secret specific is baked in.
-ENV APP_PORT=5003
-ENV ASPNETCORE_URLS=http://+:${APP_PORT}
+# Fixed container-internal port; no hosts/secrets are baked into the image.
+# Remap externally with `docker run -p <host>:5003`.
+ENV ASPNETCORE_URLS=http://+:5003
 EXPOSE 5003
 
 COPY --from=build /app/publish .
@@ -37,6 +37,6 @@ COPY --from=build /app/publish .
 USER $APP_UID
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=15s --retries=3 \
-    CMD curl -fsS "http://localhost:${APP_PORT}/health" || exit 1
+    CMD curl -fsS "http://localhost:5003/health" || exit 1
 
 ENTRYPOINT ["dotnet", "Order.API.dll"]
