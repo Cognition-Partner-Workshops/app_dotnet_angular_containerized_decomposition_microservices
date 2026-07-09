@@ -1,0 +1,32 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+**/Dockerfile*
+**/.dockerignore
+**/docker-compose*.yml
+
+# OS / misc
+.DS_Store
+Thumbs.db
+*.log
+
+# Local config that should never be baked into an image
+**/appsettings.*.local.json
+**/*.env
+.env
