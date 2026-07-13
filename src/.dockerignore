@@ -1,0 +1,34 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.swp
+
+# Version control
+.git/
+.gitignore
+**/.gitkeep
+
+# Docker
+**/Dockerfile*
+**/.dockerignore
+docker-compose*.yml
+
+# Local config & secrets (never bake into the image)
+**/appsettings.*.local.json
+**/.env
+**/.env.local
+*.pfx
+*.key
+
+# Logs & misc
+**/*.log
+**/*.md
