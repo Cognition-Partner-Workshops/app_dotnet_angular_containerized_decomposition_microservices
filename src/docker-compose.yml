@@ -60,12 +60,13 @@ services:
       context: .
       dockerfile: Services/Product/Product.API/Dockerfile
     ports:
-      - "5004:5004"
+      - "5004:8080"
     depends_on:
       - postgres
       - rabbitmq
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=productdb;Username=postgres;Password=postgres
 
   notification-service:
