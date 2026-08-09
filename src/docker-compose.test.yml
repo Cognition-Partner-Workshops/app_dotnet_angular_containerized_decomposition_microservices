@@ -1,0 +1,13 @@
+services:
+  integration-tests:
+    build:
+      context: .
+      dockerfile: Tests/IntegrationTests/Dockerfile
+    depends_on:
+      - order-service
+      - product-service
+      - notification-service
+    environment:
+      ORDER_URL: http://order-service:5003
+      PRODUCT_URL: http://product-service:5004
+      NOTIFICATION_URL: http://notification-service:5005
