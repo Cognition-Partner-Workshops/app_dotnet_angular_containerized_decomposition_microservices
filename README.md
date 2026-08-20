@@ -102,6 +102,17 @@ cd src/Services/Identity/Identity.API
 dotnet run
 ```
 
+## Running tests
+
+Run the automated Notification service tests from the repository root:
+
+```bash
+dotnet test src/Microservices.sln
+```
+
+The tests use SQLite in-memory storage and mocked messaging, so they do not
+require external PostgreSQL or RabbitMQ infrastructure.
+
 ## Related Repositories
 
 | Repo | Purpose |
