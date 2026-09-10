@@ -54,6 +54,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=orderdb;Username=postgres;Password=postgres
+      - RabbitMq__ConnectionString=amqp://guest:guest@rabbitmq:5672
+      - Gateway__BaseUrl=http://api-gateway:5000
 
   product-service:
     build:
