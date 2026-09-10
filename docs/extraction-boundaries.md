@@ -62,7 +62,10 @@ Rules:
    Enrichment is optional and best-effort: a failed lookup degrades the response (null/partial
    related data), it does not fail the request.
 5. **Events, not calls, for side effects.** Order publishes `Shared.Contracts.Events.OrderPlacedEvent`
-   to RabbitMQ; Notification already consumes it. Order does not call Notification.
+   to RabbitMQ and Notification consumes it off the broker. Order does not call Notification.
+   (Notification's `OrderEventConsumer` is currently only reachable over HTTP — it has no AMQP
+   subscriber. Adding that subscriber, and only that, is an authorized exception to the allow-list
+   below for the Order extraction.)
 6. **Auth is Identity's.** Other services validate the bearer token Identity issues; they never read
    the user/role tables.
 
