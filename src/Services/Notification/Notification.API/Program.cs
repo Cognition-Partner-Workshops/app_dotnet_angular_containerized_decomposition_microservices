@@ -17,13 +17,28 @@ builder.Services.AddDbContext<NotificationDbContext>(options =>
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<NotificationRenderer>();
 builder.Services.AddScoped<OrderEventConsumer>();
+builder.Services.AddHostedService<OrderPlacedQueueListener>();
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<NotificationDbContext>();
-    db.Database.EnsureCreated();
+    var startupLogger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+    for (var attempt = 1; ; attempt++)
+    {
+        try
+        {
+            db.Database.EnsureCreated();
+            break;
+        }
+        catch (Exception ex) when (attempt < 10)
+        {
+            startupLogger.LogWarning(ex, "Database not reachable yet (attempt {Attempt}); retrying", attempt);
+            await Task.Delay(TimeSpan.FromSeconds(3));
+        }
+    }
 }
 
 if (app.Environment.IsDevelopment())
