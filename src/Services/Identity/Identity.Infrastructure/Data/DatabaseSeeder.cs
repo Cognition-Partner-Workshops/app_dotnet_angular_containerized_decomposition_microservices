@@ -10,14 +10,36 @@ namespace Identity.Infrastructure.Data;
 public class DatabaseSeeder(IdentityDbContext dbContext, ILogger<DatabaseSeeder> logger,
     IUserAccountService userAccountService, IUserRoleService userRoleService) : IDatabaseSeeder
 {
+    private const int MigrationAttempts = 10;
+    private static readonly TimeSpan MigrationRetryDelay = TimeSpan.FromSeconds(5);
+
     public async Task SeedAsync()
     {
         if (dbContext.Database.IsNpgsql())
-            await dbContext.Database.MigrateAsync();
+            await MigrateWithRetryAsync();
         else
             await dbContext.Database.EnsureCreatedAsync();
 
         await SeedDefaultUsersAsync();
+    }
+
+    private async Task MigrateWithRetryAsync()
+    {
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                await dbContext.Database.MigrateAsync();
+                return;
+            }
+            catch (Exception ex) when (attempt < MigrationAttempts)
+            {
+                logger.LogWarning(ex, "Database not reachable (attempt {Attempt} of {Attempts}), retrying in {Delay}",
+                    attempt, MigrationAttempts, MigrationRetryDelay);
+
+                await Task.Delay(MigrationRetryDelay);
+            }
+        }
     }
 
     /************ DEFAULT USERS **************/
